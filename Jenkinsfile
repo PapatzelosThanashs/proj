@@ -1,3 +1,8 @@
+def frontendImage = null
+def backendImage = null
+def dbImage = null
+
+
 pipeline {
     agent { label 'jenkins-agent' }
     environment {
@@ -70,13 +75,13 @@ pipeline {
         stage('Push Images') {
                 steps {
                     script {
-                        if (frontendImage) {
+                        if (frontendImage != null) {
                             frontendImage.push()
                         }
-                        if (backendImage) {
+                        if (backendImage != null) {
                             backendImage.push()
                         }
-                        if (dbImage) {
+                        if (dbImage != null) {
                             dbImage.push()
                         }
                     }
