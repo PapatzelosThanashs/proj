@@ -56,10 +56,10 @@ pipeline {
 
         stage('Build DB') {
             when {
-                changeset "**/db/**"
+                changeset "**/database/**"
             }
             steps {
-                dir('db') {
+                dir('database') {
                     script {
                         docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}/db:${IMAGE_TAG}")
                     }
