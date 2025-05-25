@@ -31,6 +31,7 @@ pipeline {
             }
             steps {
                 dir('frontend') {
+                    sh 'npm install && npm run build'
                     script {
                         docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}/frontend:${IMAGE_TAG}")
                     }
