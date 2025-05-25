@@ -43,8 +43,9 @@ pipeline {
                 changeset "**/demo/**"
             }
             steps {
-                sh 'mvn clean package'
+                
                 dir('demo') {
+                    sh 'mvn clean package'
                     script {
                         docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}/backend:${IMAGE_TAG}")
                     }
