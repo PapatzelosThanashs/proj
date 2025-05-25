@@ -9,7 +9,7 @@ pipeline {
         NEXUS_REGISTRY = 'nexus:5000'   // Your private Nexus Docker registry URL (host:port)
         DOCKER_REPO = 'myrepo'                      // Nexus Docker repo name
         IMAGE_TAG = "${env.BUILD_NUMBER}"
-        //DOCKER_CREDS_ID = 'nexus-docker-creds'           // Jenkins credential ID for Nexus Docker registry
+        DOCKER_CREDS_ID = 'nexus-docker-creds'           // Jenkins credential ID for Nexus Docker registry
         GIT_REPO_URL = 'https://github.com/PapatzelosThanashs/proj.git'
         GIT_BRANCH = 'master'
         //GIT_CREDENTIALS_ID = 'github-creds'      
@@ -74,15 +74,17 @@ pipeline {
 
         stage('Push Images') {
                 steps {
-                    script {
-                        if (frontendImage != null) {
-                            frontendImage.push()
-                        }
-                        if (backendImage != null) {
-                            backendImage.push()
-                        }
-                        if (dbImage != null) {
-                            dbImage.push()
+                    docker.withRegistry("http://nexus:5000", "${DOCKER_CREDS_ID}") {
+                        script {
+                            if (frontendImage != null) {
+                                frontendImage.push()
+                            }
+                            if (backendImage != null) {
+                                backendImage.push()
+                            }
+                            if (dbImage != null) {
+                                dbImage.push()
+                            }
                         }
                     }
                 }
