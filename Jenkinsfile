@@ -75,7 +75,7 @@ pipeline {
         stage('Push Images') {
                 steps {
                     script {
-                        docker.withRegistry("${NEXUS_REGISTRY}", "${DOCKER_CREDS_ID}") {
+                        docker.withRegistry("http://${NEXUS_REGISTRY}", "${DOCKER_CREDS_ID}") {
                             if (frontendImage != null) {
                                 frontendImage.push()
                             }
