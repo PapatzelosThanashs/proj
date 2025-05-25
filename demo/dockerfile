@@ -11,15 +11,9 @@ RUN apk update && apk add --no-cache \
 # Expose port 8080
 EXPOSE 8090
 
-# Set a working directory (optional, adjust as needed)
-WORKDIR /app
 
-COPY ./demo ./demo
+COPY ./target/demo-1.0.0.jar ./
 
-WORKDIR /app/demo/
-RUN mvn clean package
-
-WORKDIR /app/demo/target
 # Just a placeholder command to keep the container running
 CMD ["java", "-jar", "demo-1.0.0.jar"]
 
