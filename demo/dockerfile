@@ -1,16 +1,8 @@
 # Use OpenJDK 17 Alpine base image
 FROM openjdk:17-jdk-alpine
 
-# Install bash (optional), git, maven, nodejs, npm, and curl
-RUN apk update && apk add --no-cache \
-    bash \
-    git \
-    maven \
-    curl
-
 # Expose port 8080
 EXPOSE 8090
-
 
 COPY ./target/demo-1.0.0.jar ./
 
