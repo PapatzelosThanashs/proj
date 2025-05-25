@@ -65,23 +65,7 @@ pipeline {
             }
         }
 
-        stage('Push Images') {
-            steps {
-                withDockerRegistry([credentialsId: "${DOCKER_CREDS_ID}", url: "http://${NEXUS_REGISTRY}"]) {
-                    script {
-                        if (fileExists('frontend/Dockerfile')) {
-                            docker.image("${NEXUS_REGISTRY}/${DOCKER_REPO}/frontend:${IMAGE_TAG}").push()
-                        }
-                        if (fileExists('demo/Dockerfile')) {
-                            docker.image("${NEXUS_REGISTRY}/${DOCKER_REPO}/backend:${IMAGE_TAG}").push()
-                        }
-                        if (fileExists('db/Dockerfile')) {
-                            docker.image("${NEXUS_REGISTRY}/${DOCKER_REPO}/db:${IMAGE_TAG}").push()
-                        }
-                    }
-                }
-            }
-        }
+ 
 
     }
 }
