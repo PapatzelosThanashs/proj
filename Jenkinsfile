@@ -73,7 +73,6 @@ pipeline {
         }
 
         stage('Push Images') {
-            agent { label 'jenkins-agent' } 
                 steps {
                     script {
                         docker.withRegistry("http://${NEXUS_REGISTRY}", "${DOCKER_CREDS_ID}") {
