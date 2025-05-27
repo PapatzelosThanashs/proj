@@ -47,7 +47,7 @@ pipeline {
                 dir('frontend') {
                     sh 'npm install && npm run build'
                     script {
-                        frontendImage = docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}/frontend:${IMAGE_TAG}")
+                        frontendImage = docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}:frontend-${IMAGE_TAG}")
                     }
                 }
             }
@@ -62,7 +62,7 @@ pipeline {
                 dir('demo') {
                     sh 'mvn clean package'
                     script {
-                        backendImage = docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}/backend:${IMAGE_TAG}")
+                        backendImage = docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}:backend-${IMAGE_TAG}")
                     }
                 }
             }
@@ -75,7 +75,7 @@ pipeline {
             steps {
                 dir('database') {
                     script {
-                        dbImage = docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}/db:${IMAGE_TAG}")
+                        dbImage = docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}:db-${IMAGE_TAG}")
                     }
                 }
             }
