@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.CrossOrigin; //<--- delete this. only for testing vue
 
  
-@CrossOrigin(origins = "http://frontend:80") 
+@CrossOrigin(origins = "*") 
 @RestController
 @RequestMapping("api/users")
 @Tag(name = "User Management", description = "Operations related to user management")
