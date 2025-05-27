@@ -7,7 +7,6 @@ pipeline {
     agent { label 'jenkins-agent' }
     environment {
         NEXUS_REGISTRY = 'nexus:5000'   // Your private Nexus Docker registry URL (host:port)
-        //DOCKER_REPO = 'myrepo'                      // Nexus Docker repo name
         IMAGE_TAG = null
         DOCKER_CREDS_ID = 'nexus-docker-creds'           // Jenkins credential ID for Nexus Docker registry
         GIT_REPO_URL = 'https://github.com/PapatzelosThanashs/proj.git'
@@ -17,7 +16,7 @@ pipeline {
 
     stages {
 
-          stage('Initialize') {
+        stage('Initialize') {
             steps {
                 script {
                     IMAGE_TAG = new Date().format("yyyy-MM-dd_HHmm", TimeZone.getTimeZone('UTC'))
@@ -25,8 +24,8 @@ pipeline {
                 }
             }
         }
-     
-           stage('Checkout') {
+        
+            stage('Checkout') {
             steps {
                 // Checkout GitHub repo (private or public)
                 checkout([$class: 'GitSCM',
@@ -39,48 +38,51 @@ pipeline {
             }
         }
  
-        stage('Build Frontend') {
-            when {
-                changeset "**/frontend/**"
-            }
-            steps {
-                dir('frontend') {
-                    sh 'npm install && npm run build'
-                    script {
-                        frontendImage = docker.build("${NEXUS_REGISTRY}/frontend:${IMAGE_TAG}")
+        stage('Build All Images') {
+            parallel {
+                stage('Build Frontend') {
+                    when {
+                        changeset "**/frontend/**"
+                    }
+                    steps {
+                        dir('frontend') {
+                            sh 'npm install && npm run build'
+                            script {
+                                frontendImage = docker.build("${NEXUS_REGISTRY}/frontend:${IMAGE_TAG}")
+                            }
+                        }
+                    }
+                }
+
+                stage('Build Backend') {
+                    when {
+                        changeset "**/demo/**"
+                    }
+                    steps {
+                        
+                        dir('demo') {
+                            sh 'mvn clean package'
+                            script {
+                                backendImage = docker.build("${NEXUS_REGISTRY}/backend:${IMAGE_TAG}")
+                            }
+                        }
+                    }
+                }
+
+                stage('Build DB') {
+                    when {
+                        changeset "**/database/**"
+                    }
+                    steps {
+                        dir('database') {
+                            script {
+                                dbImage = docker.build("${NEXUS_REGISTRY}/db:${IMAGE_TAG}")
+                            }
+                        }
                     }
                 }
             }
         }
-
-        stage('Build Backend') {
-            when {
-                changeset "**/demo/**"
-            }
-            steps {
-                
-                dir('demo') {
-                    sh 'mvn clean package'
-                    script {
-                        backendImage = docker.build("${NEXUS_REGISTRY}/backend:${IMAGE_TAG}")
-                    }
-                }
-            }
-        }
-
-        stage('Build DB') {
-            when {
-                changeset "**/database/**"
-            }
-            steps {
-                dir('database') {
-                    script {
-                        dbImage = docker.build("${NEXUS_REGISTRY}/db:${IMAGE_TAG}")
-                    }
-                }
-            }
-        }
-
         stage('Push Images') {
                 steps {
                     script {
