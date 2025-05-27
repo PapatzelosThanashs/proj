@@ -22,9 +22,10 @@ import com.project.demo.dto.UserSummaryDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.springframework.web.bind.annotation.CrossOrigin; //<--- delete this. only for testing vue
 
  
-
+@CrossOrigin(origins = "http://localhost:80") 
 @RestController
 @RequestMapping("api/users")
 @Tag(name = "User Management", description = "Operations related to user management")
