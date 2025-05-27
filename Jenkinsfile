@@ -8,7 +8,7 @@ pipeline {
     environment {
         NEXUS_REGISTRY = 'nexus:5000'   // Your private Nexus Docker registry URL (host:port)
         DOCKER_REPO = 'myrepo'                      // Nexus Docker repo name
-        IMAGE_TAG = "${env.BUILD_NUMBER}"
+        IMAGE_TAG = null
         DOCKER_CREDS_ID = 'nexus-docker-creds'           // Jenkins credential ID for Nexus Docker registry
         GIT_REPO_URL = 'https://github.com/PapatzelosThanashs/proj.git'
         GIT_BRANCH = 'master'
@@ -16,6 +16,15 @@ pipeline {
     }
 
     stages {
+
+          stage('Initialize') {
+            steps {
+                script {
+                    IMAGE_TAG = new Date().format("yyyy-MM-dd_HHmm", TimeZone.getTimeZone('UTC'))
+                    echo "Using IMAGE_TAG: ${IMAGE_TAG}"
+                }
+            }
+        }
      
            stage('Checkout') {
             steps {
@@ -53,7 +62,7 @@ pipeline {
                 dir('demo') {
                     sh 'mvn clean package'
                     script {
-                       backendImage = docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}/backend:${IMAGE_TAG}")
+                        backendImage = docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}/backend:${IMAGE_TAG}")
                     }
                 }
             }
