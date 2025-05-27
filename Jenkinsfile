@@ -7,7 +7,7 @@ pipeline {
     agent { label 'jenkins-agent' }
     environment {
         NEXUS_REGISTRY = 'nexus:5000'   // Your private Nexus Docker registry URL (host:port)
-        DOCKER_REPO = 'myrepo'                      // Nexus Docker repo name
+        //DOCKER_REPO = 'myrepo'                      // Nexus Docker repo name
         IMAGE_TAG = null
         DOCKER_CREDS_ID = 'nexus-docker-creds'           // Jenkins credential ID for Nexus Docker registry
         GIT_REPO_URL = 'https://github.com/PapatzelosThanashs/proj.git'
@@ -47,7 +47,7 @@ pipeline {
                 dir('frontend') {
                     sh 'npm install && npm run build'
                     script {
-                        frontendImage = docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}:frontend-${IMAGE_TAG}")
+                        frontendImage = docker.build("${NEXUS_REGISTRY}/frontend:${IMAGE_TAG}")
                     }
                 }
             }
@@ -62,7 +62,7 @@ pipeline {
                 dir('demo') {
                     sh 'mvn clean package'
                     script {
-                        backendImage = docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}:backend-${IMAGE_TAG}")
+                        backendImage = docker.build("${NEXUS_REGISTRY}/backend:${IMAGE_TAG}")
                     }
                 }
             }
@@ -75,7 +75,7 @@ pipeline {
             steps {
                 dir('database') {
                     script {
-                        dbImage = docker.build("${NEXUS_REGISTRY}/${DOCKER_REPO}:db-${IMAGE_TAG}")
+                        dbImage = docker.build("${NEXUS_REGISTRY}/db:${IMAGE_TAG}")
                     }
                 }
             }
