@@ -34,7 +34,7 @@ import axios from "axios";
     methods: {
         async getUsers() {
         try {
-            const response = await axios.get("http://localhost:31082/api/users");
+            const response = await axios.get("http://localhost:8090/api/users");
            
             this.users = response.data;
 
@@ -45,7 +45,7 @@ import axios from "axios";
         async deleteUser(userId) {
           if (confirm("Are you sure you want to delete this user?")) {
             try {
-              await axios.delete(`http://localhost:31082/api/users/${userId}`);
+              await axios.delete(`http://localhost:8090/api/users/${userId}`);
               this.users = this.users.filter(user => user.id !== userId);
               alert("User successfully deleted");
             } catch (error) {
