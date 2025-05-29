@@ -139,7 +139,7 @@
 
         try {
           // Send POST request to the backend to create the new user
-          await axios.post("backend-service:8090/api/users", this.newUser);
+          await axios.post("http://localhost:8090/api/users", this.newUser);
           
 
           // Reset the form fields
