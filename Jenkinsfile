@@ -48,7 +48,7 @@ pipeline {
                         dir('frontend') {
                             sh 'npm install && npm run build'
                             script {
-                                frontendImage = docker.build("${NEXUS_REGISTRY}/frontend")
+                                frontendImage = docker.build("${NEXUS_REGISTRY}/frontend/")
                             }
                         }
                     }
