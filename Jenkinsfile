@@ -49,6 +49,8 @@ pipeline {
                             sh 'npm install && npm run build'
                             script {
                                 frontendImage = docker.build("${NEXUS_REGISTRY}/frontend:${IMAGE_TAG}")
+                                frontendImage.tag('latest')
+
                             }
                         }
                     }
@@ -64,6 +66,8 @@ pipeline {
                             sh 'mvn clean package'
                             script {
                                 backendImage = docker.build("${NEXUS_REGISTRY}/backend:${IMAGE_TAG}")
+                                backendImage.tag('latest')
+
                             }
                         }
                     }
@@ -77,6 +81,8 @@ pipeline {
                         dir('database') {
                             script {
                                 dbImage = docker.build("${NEXUS_REGISTRY}/db:${IMAGE_TAG}")
+                                dbImage.tag('latest')
+
                             }
                         }
                     }
