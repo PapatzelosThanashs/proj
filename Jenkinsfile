@@ -48,7 +48,7 @@ pipeline {
                         dir('frontend') {
                             sh 'npm install && npm run build'
                             script {
-                                frontendImage = docker.build("${NEXUS_REGISTRY}/frontend:${IMAGE_TAG}")
+                                frontendImage = docker.build("${NEXUS_REGISTRY}/frontend")
                             }
                         }
                     }
@@ -88,7 +88,9 @@ pipeline {
                     script {
                         docker.withRegistry("http://${NEXUS_REGISTRY}", "${DOCKER_CREDS_ID}") {
                             if (frontendImage != null) {
-                                frontendImage.push()
+                                frontendImage.push("${IMAGE_TAG}")
+                                frontendImage.push("latest")
+
                             }
                             if (backendImage != null) {
                                 backendImage.push()
