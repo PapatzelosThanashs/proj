@@ -93,10 +93,12 @@ pipeline {
 
                             }
                             if (backendImage != null) {
-                                backendImage.push()
+                                backendImage.push("${IMAGE_TAG}")
+                                backendImage.push("latest")
                             }
                             if (dbImage != null) {
-                                dbImage.push()
+                                dbImage.push("${IMAGE_TAG}")
+                                dbImage.push("latest")
                             }
                         }
                     }
