@@ -3,13 +3,13 @@
     <section class="menu">
       <router-link to="/users" class="menu-item">
         <div class="icon">👥</div>
-        <h2>Display Users.</h2>
+        <h2>Display Users</h2>
         <p>View a list of all registered users.</p>
       </router-link>
 
       <router-link to="/register" class="menu-item">
         <div class="icon">📝</div>
-        <h2>Register New User.</h2>
+        <h2>Register New User</h2>
         <p>Add a new user to the system with a simple form.</p>
       </router-link>
     </section>
