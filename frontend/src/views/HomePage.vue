@@ -3,7 +3,7 @@
     <section class="menu">
       <router-link to="/users" class="menu-item">
         <div class="icon">👥</div>
-        <h2>Display Users.</h2>
+        <h2>Display Users</h2>
         <p>View a list of all registered users.</p>
       </router-link>
 
