@@ -1,4 +1,4 @@
-# Use OpenJDK 17 Alpine base image.
+# Use OpenJDK 17 Alpine base image
 FROM openjdk:17-jdk-alpine
 
 # Expose port 8080
