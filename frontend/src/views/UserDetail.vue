@@ -97,7 +97,7 @@ export default {
      
       if (this.errors[field] ) return;
 
-      this.editing[field] = false;  // Exit editing mode for the specific field
+      this.editing[field] = false;  // Exit editing mode for the specific field.
       if (confirm("Are you sure you want to update this user?")) {
       try {
         // Make PATCH request to backend API to update the user details

@@ -5,6 +5,7 @@ def dbImage = null
 
 pipeline {
     agent { label 'jenkins-agent' }
+
     environment {
         NEXUS_REGISTRY = 'nexus:5000'   // Your private Nexus Docker registry URL (host:port)
         IMAGE_TAG = null
@@ -32,7 +33,7 @@ pipeline {
                     branches: [[name: "*/${GIT_BRANCH}"]],
                     userRemoteConfigs: [[
                         url: "${GIT_REPO_URL}",
-                        //credentialsId: "${GIT_CREDENTIALS_ID}" // Remove if public repo
+                //credentialsId: "${GIT_CREDENTIALS_ID}" // Remove if public repo
                     ]]
                 ])
             }
@@ -89,33 +90,57 @@ pipeline {
                 }
             }
         }
-        stage('Push Images') {
-                steps {
-                    script {
-                        docker.withRegistry("http://${NEXUS_REGISTRY}", "${DOCKER_CREDS_ID}") {
-                            if (frontendImage != null) {
-                                frontendImage.push("${IMAGE_TAG}")
-                                frontendImage.push("latest")
 
-                            }
-                            if (backendImage != null) {
-                                backendImage.push("${IMAGE_TAG}")
-                                backendImage.push("latest")
-                            }
-                            if (dbImage != null) {
-                                dbImage.push("${IMAGE_TAG}")
-                                dbImage.push("latest")
+        stage('Push Images') {
+            parallel {
+                stage('Push Frontend') {
+                    when {
+                        expression { frontendImage != null }
+                    }
+                    steps {
+                        script {
+                                docker.withRegistry("http://${NEXUS_REGISTRY}", "${DOCKER_CREDS_ID}") {
+                                image.push("${IMAGE_TAG}")
+                                image.push("latest")
                             }
                         }
                     }
                 }
-        }
 
+                stage('Push Backend') {
+                    when {
+                        expression { backendImage != null }
+                    }
+                    steps {
+                        script {
+                                docker.withRegistry("http://${NEXUS_REGISTRY}", "${DOCKER_CREDS_ID}") {
+                                image.push("${IMAGE_TAG}")
+                                image.push("latest")
+                            }
+                        }
+                    }
+                }
+
+                stage('Push DB') {
+                    when {
+                        expression { dbImage != null }
+                    }
+                    steps {
+                        script {
+                                docker.withRegistry("http://${NEXUS_REGISTRY}", "${DOCKER_CREDS_ID}") {
+                                image.push("${IMAGE_TAG}")
+                                image.push("latest")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     post {
         always {
-            cleanWs() // Cleans workspace
+            cleanWs() // Clean workspace
         }
     }
 }
