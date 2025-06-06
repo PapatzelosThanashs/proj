@@ -1,5 +1,6 @@
 <template>
     <div class="displayusers">
+      {{ domain }}
       <div class="refresh-container">
         <button class="refresh-button" @click="getUsers()">🔄 Refresh Users</button>
       </div>
@@ -28,15 +29,19 @@ import axios from "axios";
     name: 'DisplayUsers',
     data(){
     return{ 
-      users:[]
+      users:[],
+      domain: "",
     };
   },
     methods: {
         async getUsers() {
         try {
             const response = await axios.get("http://localhost/api/users");
+            const responsedomain = await axios.get("http://localhost/domain");
            
             this.users = response.data;
+
+            this.domain= responsedomain.data;
 
         } catch (error) {
             alert(error.response.data.message);
