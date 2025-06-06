@@ -85,18 +85,6 @@ public class UserController {
     }
 
 
-    /* printing the domain  */
-    @GetMapping("/domain")
-    public String getRequestDomain() {
-        String domain = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .replacePath(null)
-                .build()
-                .toUriString();
-
-        System.out.println("-----------------+++++++++++--------------Request domain: " + domain);
-        return domain;
-    }
-
 
 
 }
