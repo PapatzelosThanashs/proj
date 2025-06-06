@@ -24,6 +24,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.CrossOrigin; //<--- delete this. only for testing vue
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder; //<- just for printing the domain
+
  
 @CrossOrigin(origins = "http://localhost") 
 @RestController
@@ -81,6 +83,20 @@ public class UserController {
     public UserDTO put(@PathVariable Long id, @RequestBody @Validated(OnCreate.class) UserDTO userDTO) {
         return userService.updateUser(id, userDTO);
     }
+
+
+    /* printing the domain  */
+    @GetMapping("/domain")
+    public String getRequestDomain() {
+        String domain = ServletUriComponentsBuilder.fromCurrentRequestUri()
+                .replacePath(null)
+                .build()
+                .toUriString();
+
+        System.out.println("-----------------+++++++++++--------------Request domain: " + domain);
+        return domain;
+    }
+
 
 
 }
