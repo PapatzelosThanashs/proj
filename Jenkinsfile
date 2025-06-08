@@ -35,6 +35,7 @@ pipeline {
                         branch: 'master'
                         // credentialsId: "${GIT_CREDENTIALS_ID}"
                     )
+                    stash name: 'source-code'   
                 }
             }
  
@@ -46,6 +47,7 @@ pipeline {
                         changeset "**/frontend/**"
                     }
                     steps {
+                        unstash 'source-code'
                         dir('frontend') {
                             sh 'npm install && npm run build'
                             script {
@@ -63,7 +65,7 @@ pipeline {
                         changeset "**/demo/**"
                     }
                     steps {
-                        
+                        unstash 'source-code'
                         dir('demo') {
                             sh 'mvn clean package'
                             script {
@@ -81,6 +83,7 @@ pipeline {
                         changeset "**/database/**"
                     }
                     steps {
+                        unstash 'source-code'
                         dir('database') {
                             script {
                                 dbImage = docker.build("${NEXUS_REGISTRY}/db:${IMAGE_TAG}")
