@@ -7,7 +7,7 @@ pipeline {
     agent { label 'jenkins-agent' }
 
     environment {
-        NEXUS_REGISTRY = 'nexus:5000'   // Your private Nexus Docker registry URL (host:port)
+        NEXUS_REGISTRY = 'host.docker.internal:5000'   // Your private Nexus Docker registry URL (host:port)
         DOCKER_CREDS_ID = 'nexus-docker-creds'           // Jenkins credential ID for Nexus Docker registry
         GIT_REPO_URL = 'https://github.com/PapatzelosThanashs/proj.git'
         GIT_BRANCH = 'master'
