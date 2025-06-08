@@ -4,7 +4,7 @@ def dbImage = null
 
 
 pipeline {
-     agent { label 'jenkins-agent' }
+     agent none
 
     environment {
         NEXUS_REGISTRY = 'host.docker.internal:5000'   // Your private Nexus Docker registry URL (host:port)
@@ -30,15 +30,13 @@ pipeline {
                 agent { label 'jenkins-agent' }
                 steps {
                     // Checkout GitHub repo (private or public)
-                    checkout([$class: 'GitSCM',
-                        branches: [[name: "${GIT_BRANCH}"]],
-                        userRemoteConfigs: [[
-                            url: "${GIT_REPO_URL}",
-                    //credentialsId: "${GIT_CREDENTIALS_ID}" // Remove if public repo
-                        ]]
-                    ])
+                    steps {
+                        git branch: "${GIT_BRANCH}",
+                        //credentialsId: "${GIT_CREDENTIALS_ID}",
+                        url: "${GIT_REPO_URL}"
+                    }
                 }
-        }
+            }
  
         stage('Build All Images') {
             parallel {
@@ -145,9 +143,4 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            cleanWs() // Clean workspace
-        }
-    }
 }
