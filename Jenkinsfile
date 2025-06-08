@@ -31,7 +31,7 @@ pipeline {
                 steps {
                     // Checkout GitHub repo (private or public)
                     checkout([$class: 'GitSCM',
-                        branches: [[name: "*/${GIT_BRANCH}"]],
+                        branches: [[name: "${GIT_BRANCH}"]],
                         userRemoteConfigs: [[
                             url: "${GIT_REPO_URL}",
                     //credentialsId: "${GIT_CREDENTIALS_ID}" // Remove if public repo
