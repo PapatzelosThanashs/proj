@@ -9,8 +9,8 @@ pipeline {
     environment {
         NEXUS_REGISTRY = 'host.docker.internal:5000'   // Your private Nexus Docker registry URL (host:port)
         DOCKER_CREDS_ID = 'nexus-docker-creds'           // Jenkins credential ID for Nexus Docker registry
-        GIT_REPO_URL = 'https://github.com/PapatzelosThanashs/proj.git'
-        GIT_BRANCH = 'master'
+        //GIT_REPO_URL = 'https://github.com/PapatzelosThanashs/proj.git'
+        //GIT_BRANCH = 'master'
         //GIT_CREDENTIALS_ID = 'github-creds'      
     }
 
@@ -31,8 +31,8 @@ pipeline {
                 steps {
                     // Checkout GitHub repo (private or public)
                     git(
-                        url: "${GIT_REPO_URL}",
-                        branch: "${GIT_BRANCH}"
+                        url: 'https://github.com/PapatzelosThanashs/proj.git',
+                        branch: 'master'
                         // credentialsId: "${GIT_CREDENTIALS_ID}"
                     )
                 }
