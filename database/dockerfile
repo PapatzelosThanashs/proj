@@ -1,4 +1,4 @@
-# Use official MySQL 8.0.33 as base image, some changes to trigger pipeline.
+# Use official MySQL 8.0.33 as base image, some changes to trigger pipeline .
 FROM mysql:8.0.33
 
 COPY bind.cnf /etc/mysql/conf.d/bind.cnf

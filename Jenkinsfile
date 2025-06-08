@@ -30,11 +30,9 @@ pipeline {
                 agent { label 'jenkins-agent' }
                 steps {
                     // Checkout GitHub repo (private or public)
-                    steps {
                         git branch: "${GIT_BRANCH}",
                         //credentialsId: "${GIT_CREDENTIALS_ID}",
                         url: "${GIT_REPO_URL}"
-                    }
                 }
             }
  
