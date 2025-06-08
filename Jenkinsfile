@@ -6,6 +6,10 @@ def dbImage = null
 pipeline {
      agent none
 
+    options {
+        skipDefaultCheckout()
+    } 
+
     environment {
         NEXUS_REGISTRY = 'host.docker.internal:5000'   // Your private Nexus Docker registry URL (host:port)
         DOCKER_CREDS_ID = 'nexus-docker-creds'           // Jenkins credential ID for Nexus Docker registry
