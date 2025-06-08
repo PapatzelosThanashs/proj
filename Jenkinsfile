@@ -4,7 +4,7 @@ def dbImage = null
 
 
 pipeline {
-    agent { label 'jenkins-agent' }
+    agent none
 
     environment {
         NEXUS_REGISTRY = 'host.docker.internal:5000'   // Your private Nexus Docker registry URL (host:port)
@@ -17,6 +17,7 @@ pipeline {
     stages {
 
         stage('Initialize') {
+            agent { label 'jenkins-agent' }
             steps {
                 script {
                     IMAGE_TAG = new Date().format("yyyy-MM-dd_HHmm", TimeZone.getTimeZone('UTC'))
@@ -26,21 +27,23 @@ pipeline {
         }
         
             stage('Checkout') {
-            steps {
-                // Checkout GitHub repo (private or public)
-                checkout([$class: 'GitSCM',
-                    branches: [[name: "*/${GIT_BRANCH}"]],
-                    userRemoteConfigs: [[
-                        url: "${GIT_REPO_URL}",
-                //credentialsId: "${GIT_CREDENTIALS_ID}" // Remove if public repo
-                    ]]
-                ])
-            }
+                agent { label 'jenkins-agent' }
+                steps {
+                    // Checkout GitHub repo (private or public)
+                    checkout([$class: 'GitSCM',
+                        branches: [[name: "*/${GIT_BRANCH}"]],
+                        userRemoteConfigs: [[
+                            url: "${GIT_REPO_URL}",
+                    //credentialsId: "${GIT_CREDENTIALS_ID}" // Remove if public repo
+                        ]]
+                    ])
+                }
         }
  
         stage('Build All Images') {
             parallel {
                 stage('Build Frontend') {
+                agent { label 'jenkins-agent' }
                     when {
                         changeset "**/frontend/**"
                     }
@@ -57,6 +60,7 @@ pipeline {
                 }
 
                 stage('Build Backend') {
+                    agent { label 'jenkins-agent' }
                     when {
                         changeset "**/demo/**"
                     }
@@ -74,6 +78,7 @@ pipeline {
                 }
 
                 stage('Build DB') {
+                    agent { label 'jenkins-agent' }
                     when {
                         changeset "**/database/**"
                     }
@@ -93,6 +98,7 @@ pipeline {
         stage('Push Images') {
             parallel {
                 stage('Push Frontend') {
+                    agent { label 'jenkins-agent' }
                     when {
                         expression { frontendImage != null }
                     }
@@ -107,6 +113,7 @@ pipeline {
                 }
 
                 stage('Push Backend') {
+                    agent { label 'jenkins-agent' }
                     when {
                         expression { backendImage != null }
                     }
@@ -121,6 +128,7 @@ pipeline {
                 }
 
                 stage('Push DB') {
+                    agent { label 'jenkins-agent' }
                     when {
                         expression { dbImage != null }
                     }
