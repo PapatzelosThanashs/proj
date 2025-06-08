@@ -4,7 +4,7 @@ def dbImage = null
 
 
 pipeline {
-    agent none
+     agent { label 'jenkins-agent' }
 
     environment {
         NEXUS_REGISTRY = 'host.docker.internal:5000'   // Your private Nexus Docker registry URL (host:port)

@@ -135,7 +135,7 @@ import axios from "axios";
   width: 100%;
   display: flex;
   justify-content: flex-start; /* Align left */
-  margin-bottom: 1rem; /* Space between button and table !.some changes to trigger pipeline */
+  margin-bottom: 1rem; /* Space between button and table !.some changes to trigger pipeline  */
 }
 
 
