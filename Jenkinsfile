@@ -32,7 +32,7 @@ pipeline {
                     // Checkout GitHub repo (private or public)
                     git(
                         url: "${GIT_REPO_URL}",
-                        branch: "${GIT_BRANCH}",
+                        branch: "${GIT_BRANCH}"
                         // credentialsId: "${GIT_CREDENTIALS_ID}"
                     )
                 }
