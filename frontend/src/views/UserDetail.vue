@@ -88,7 +88,7 @@ export default {
     methods: {
     // Set the field to editing mode
     editField(field) {
-      this.editing[field] = true;  // Directly assign to the editing object
+      this.editing[field] = true;  // Directly assign to the editing object 
     },
 
     // Save the edited field and exit editing mode
